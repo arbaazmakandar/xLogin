@@ -1,43 +1,27 @@
 import React, { useState } from "react";
 
 const Login = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [message, setMessage] = useState("");
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const handleSubmit = (event, formData) => {
+  const [form, setForm] = useState({ loggedIn: false, message: "" });
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const username = formData.username;
-    const password = formData.password;
-    console.log(username, password);
-    if (username === "user" && password === "password") {
-      setLoggedIn(true);
-      setMessage("Welcome, user");
+    const [usernameInput, passwordInput] = event.target.elements;
+    if (usernameInput.value === "user" && passwordInput.value === "password") {
+      setForm({ loggedIn: true, message: "Welcome, user" });
     } else {
-      setLoggedIn(false);
-      setMessage("Invalid username or password");
+      setForm({ loggedIn: false, message: "Incorrect username or password" });
     }
   };
   return (
     <>
       <h2>Login Page</h2>
-      {loggedIn ? (
-        <p>{message}</p>
+      {form.loggedIn ? (
+        <p>{form.message}</p>
       ) : (
         <>
-          {" "}
-          {message}
-          <form action="" onSubmit={(event) => handleSubmit(event, formData)}>
+          {form.message}
+          <form action="" onSubmit={handleSubmit}>
             <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              placeholder="username"
-              id="username"
-              required
-              value={formData.username}
-              onChange={(event) =>
-                setFormData({ ...formData, username: event.target.value })
-              }
-            />
+            <input type="text" placeholder="username" id="username" required />
             <br />
             <label htmlFor="password">Password:</label>
             <input
@@ -45,14 +29,10 @@ const Login = () => {
               placeholder="password"
               id="password"
               required
-              value={formData.password}
-              onChange={(event) =>
-                setFormData({ ...formData, password: event.target.value })
-              }
             />
             <br />
             <button>Submit</button>
-          </form>{" "}
+          </form>
         </>
       )}
     </>
